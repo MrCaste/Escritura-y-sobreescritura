@@ -6,72 +6,86 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Esta clase demuestra varias operaciones básicas de archivos en Java:
+ * - Escribir texto en un archivo.
+ * - Leer líneas y caracteres de un archivo.
+ * - Modificar el contenido del archivo en memoria.
+ * - Sobreescribir el archivo original con el contenido modificado.
+ */
 public class App {
+
+    /**
+     * Método principal que ejecuta las operaciones de archivo.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados en este caso)
+     * @throws Exception Si ocurre un error al interactuar con el archivo
+     */
     public static void main(String[] args) throws Exception {
-        
-            File Archivo = new File("Archivo.txt");
+        // Crear un nuevo objeto de archivo
+        File archivo = new File("Archivo.txt");
 
-        try (FileWriter fw = new FileWriter(Archivo)) {
-
+        // Escribir contenido inicial en el archivo (demostración de escritura de cadenas)
+        try (FileWriter escritor = new FileWriter(archivo)) {
             String numero1 = "1";
             String numero2 = "2";
-            for (int iterator = 0; iterator < 3; iterator++) {
-                fw.write(numero1);
+            for (int i = 0; i < 3; i++) {
+                escritor.write(numero1);
             }
-            for (int iterator = 0; iterator < 6; iterator++) {
-                fw.write(numero2); 
+            for (int i = 0; i < 6; i++) {
+                escritor.write(numero2);
             }
-
         } catch (IOException e) {
-            System.out.println("Se ha producido un error: "+e.getMessage());
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
         }
 
-        try(FileReader fr = new FileReader(Archivo);
-            BufferedReader br = new BufferedReader(fr)) {
-
+        // Leer líneas del archivo e imprimirlas (demostración de lectura de líneas)
+        try (FileReader lector = new FileReader(archivo);
+             BufferedReader bufferLector = new BufferedReader(lector)) {
             String linea;
-            while ((linea = br.readLine()) != null) {
+            while ((linea = bufferLector.readLine()) != null) {
                 System.out.println(linea);
             }
-            
         } catch (IOException e) {
-            System.out.println("Se ha producido un error: "+e.getMessage());
-        }
-         List<Character> caracteres = new ArrayList<>();
-        try (FileReader fr = new FileReader(Archivo)) {
-            int character;
-            while ((character = fr.read()) != -1) {
-                caracteres.add((char) character);
-            }
-        } catch (IOException e){
-            System.out.println("Se ha producido un error: "+e.getMessage());
+            System.out.println("Error al leer del archivo: " + e.getMessage());
         }
 
-        // Modificar la lista (reemplazar '2' por '3')
+        // Leer caracteres del archivo y almacenarlos en una lista (demostración de lectura de caracteres)
+        List<Character> caracteres = new ArrayList<>();
+        try (FileReader lector = new FileReader(archivo)) {
+            int caracter;
+            while ((caracter = lector.read()) != -1) {
+                caracteres.add((char) caracter);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer del archivo: " + e.getMessage());
+        }
+
+        // Modificar la lista (reemplazar caracteres '2' por '3')
         for (int i = 0; i < caracteres.size(); i++) {
             if (caracteres.get(i) == '2') {
                 caracteres.set(i, '3');
             }
         }
-        // Sobreescribir el archivo original
-        try (FileWriter fw = new FileWriter(Archivo)) {
-            for (char character : caracteres) {
-                fw.write(character);
+
+        // Sobreescribir el archivo original con el contenido modificado (demostración de escritura de caracteres)
+        try (FileWriter escritor = new FileWriter(archivo)) {
+            for (char caracter : caracteres) {
+                escritor.write(caracter);
             }
-        } catch (IOException e){
-            System.out.println("Se ha producido un error: "+e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo: " + e.getMessage());
         }
-        // Mostrar el contenido del archivo modificado por pantalla
-        try (FileReader fr = new FileReader(Archivo);
-             BufferedReader br = new BufferedReader(fr)) {
 
+        // Leer el archivo modificado e imprimirlo (demostración de lectura de líneas nuevamente)
+        try (FileReader lector = new FileReader(archivo);
+             BufferedReader bufferLector = new BufferedReader(lector)) {
             String linea;
-            while ((linea = br.readLine()) != null) {
-                System.out.println(linea); 
-
+            while ((linea = bufferLector.readLine()) != null) {
+                System.out.println(linea);
             }
-        } catch (IOException e){
-            System.out.println("Se ha producido un error: "+e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error al leer del archivo: " + e.getMessage());
         }
     }
 }
